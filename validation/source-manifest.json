@@ -1,0 +1,18 @@
+{
+  "files": {
+    "L0_triangle.hm": "b3901f4b283d2611c7f521f76dab764801c64498c2d54b1facd01206413e7622",
+    "pyproject.toml": "07a5f5b7c75ff240fb37b4a8695137eab089ecb7f8d3fd2132169134c4a75d61",
+    "src/hyperlogic/__init__.py": "de838bad57c62e58c27cf662027e4a78a687ee10ce8abe361d1c10f2bccb1e49",
+    "src/hyperlogic/__main__.py": "833481fac33203dedb41fbdc190124c330f805eec23445205c9ce9a04a294c8f",
+    "src/hyperlogic/models.py": "b8e05a5c4b144cdb5955f5f02f59a0ee858a54067361e38e10ee0df7be3d9f02",
+    "src/hyperlogic/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/hyperlogic/relations.py": "a6ad146e65099ec44f4d8c7a3c4f07e5ef3c800be456d26bfc5419149c3ff102",
+    "src/hyperlogic/report.py": "ba09492787b27a6560a895850d6629f63f4be0a00b5e2e1d19356dbbdd7a24b4",
+    "src/hyperlogic/triangle.py": "e9de87cf76c853e3ac9acccf50afa9366f72addaa641227b7b6bfbe60d43e980",
+    "tests/test_models.py": "b9ffd99ed6feb79124de2dd4a315e2642dd59243833476f416d2526587a0c547",
+    "tests/test_relations.py": "bc2e50fc082d22ce90401b3e7a9a898b8e3edcfe33214c1724ee0476a1a55499",
+    "tests/test_report.py": "725a4505e0ff7e15cb1d2a303e7f4413169ffc6490a1818ef73fcf8da5edfb97",
+    "tests/test_triangle.py": "39059068ff31739db8c2f4e134275a91c99d0d48a97e308c644fb58bde6ccbcf"
+  },
+  "manifest_sha256": "79dc946b857d0095b818d7ce1998e1e5b8883c5563b442991f6be38615c24db4"
+}
