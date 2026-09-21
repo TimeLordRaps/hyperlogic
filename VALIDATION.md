@@ -115,6 +115,11 @@ python -m hyperlogic
   in the package has at most four elements.
 - No packaging artifact was built or published. `pyproject.toml` is present and
   lint-clean; `python -m build` was not run and nothing was uploaded anywhere.
+- **No preprint exists for this repository**, none is drafted, and no check
+  here bears on one. GC-2 is what a manuscript would have to settle --- that
+  `Sign` and `Claim` are not `Form` and `Prop` respelled --- and until it is
+  settled there is no result to write up. If GC-2 resolves against this
+  layer, the outcome is an archived repository rather than a paper.
 
 ## Environment note
 

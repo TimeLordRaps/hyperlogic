@@ -180,6 +180,13 @@ the opaque-then-close method are all shared with hypermath L0. That resemblance
 is a **method being reused** and is not evidence that this layer says anything
 new. Whether the content is independent is GC-2, and GC-2 is open.
 
+## Preprint
+
+There is none, and none is drafted. This is recorded rather than left to
+inference: GC-2 is what a manuscript would have to settle, and if it
+resolves against this layer the right outcome is an archived repository,
+not a paper.
+
 ## License
 
 Apache-2.0. See [LICENSE](LICENSE).
