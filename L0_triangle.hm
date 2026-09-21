@@ -1,0 +1,377 @@
+-- L0_triangle.hm
+-- Layer 0: The triangle
+-- hyperlogic | the ground of derivation
+--
+-- Imports: nothing. This is a foundation. It declares its own carrier, its own
+--          irreducible, and its own operation, and it closes its own opaque
+--          predicates in this file rather than deferring them to a later layer.
+--
+-- Cites (does not import): hypermath L0_ground.hm Section VIII, which declares
+--          seven executive opaques -- syntax, substance, semantics, derives,
+--          discharge, definition, form-closure -- and stands them on hypermath's
+--          own ground. This layer exists because that material wants a ground of
+--          its own. See Section VIII below for why it cannot be reached by
+--          importing hypermath.
+--
+-- WHY THIS FIELD EXISTS. The derivation relation -- what follows from what -- is
+-- currently stated three independent times in this family, and no statement can
+-- cite another because there is no field to cite:
+--   1. hypermath/L0_ground.hm Section VIII: opaque derives, discharge,
+--      form-closure, with seven axioms and closes in L1_relations.hm Section IV.
+--   2. metamathethicology/src/metamathethicology/spaces.py:283: Domain.METALOGIC
+--      with the predicate derivable-in, emitted by reflect(). It is the ONLY use
+--      of that domain in the package.
+--   3. grounded-hypercalculi/src/grounded_hypercalculi/language_calculus.py:151:
+--      MetamathDatabase.verify_proof, with _modus_ponens at line 264, and
+--      is_derivable over grammars at line 129.
+-- Three independent statements of one piece of knowledge is the standard
+-- threshold for extracting it. That is the whole argument for this repository,
+-- and it is recorded here rather than in a commit message so it stays checkable.
+--
+-- Status: FORM for the four axioms, the five derives, and the three closes.
+--         FRAME, documented and NOT discharged:
+--           - that Sign and Claim are independent of hypermath's Form and Prop
+--             (GC-2, and the load-bearing open problem of this package),
+--           - that the triangle has three vertices rather than some other number
+--             (GC-3),
+--           - that these three relations suffice to close hypermath's seven
+--             executive opaques (GC-4, not attempted here).
+-- =============================================================================
+
+
+-- =============================================================================
+-- SECTION I: PRIMITIVES
+-- One carrier, one claim type, one irreducible, one operation.
+-- =============================================================================
+
+primitive Sign :: Type
+    -- The carrier. A sign is whatever can be shaped, borne, and read.
+    -- DELIBERATELY NOT Form. hypermath's Form is what the operation apply
+    -- generates from the ground. A Sign is not generated; it is what a
+    -- derivation is made of. Whether this distinction survives is GC-2.
+
+primitive Claim :: Type
+    -- The claim type. A Claim is a Sign-level assertion that is either CLOSED
+    -- or OPEN. Parallel in role to hypermath's Prop and hyperethics' Norm.
+
+primitive closure :: Sign
+    -- THE irreducible. The sign whose shape, matter and reading coincide.
+    -- One irreducible in three structural roles:
+    --   as vertex      : the sign at which all three registers meet,
+    --   as closing act : the act by which a derivation stops,
+    --   as fixed point : the sign that a turn returns to itself.
+    -- This is the self-grounding posit of the layer, and it is the analogue of
+    -- hypermath's ground and hyperethics' archetype. It is NOT ground renamed:
+    -- ground is the base that apply generates FROM, while closure is the point
+    -- at which turning stops making a difference.
+
+primitive turn :: Sign -> Sign
+    -- THE operation. One turn advances a sign one edge around the triangle:
+    --   shape -> matter, matter -> reading, reading -> shape.
+    -- turn(x) is what x, read one register further, gives.
+    -- Three turns are a full circuit. That is the content of ax-triangle, and
+    -- it is the one structural place where this layer's shape differs from
+    -- hypermath's, whose ax-box closes an orbit at two steps rather than three.
+
+
+-- =============================================================================
+-- SECTION II: OPAQUE STRUCTURAL PREDICATES
+-- These are DECLARED here. Their semantics are CLOSED in Section VI of THIS
+-- file. That is the commitment this layer makes and keeps, and it is the exact
+-- commitment hyperethics L0 made and did not keep -- its three opaques were
+-- deferred to L1, and L1_will.hm GC-3 records that L1 closed none of them.
+-- =============================================================================
+
+opaque log-advances :: Sign -> Sign -> Claim
+    -- log-advances(x, y): x has moved past y; the two are not mutually reachable.
+    -- Without this, turning is idle and every derivation is trivial.
+
+opaque log-derives :: Sign -> Sign -> Claim
+    -- log-derives(x, y): x is reachable as a derivation from y.
+    -- The generative-class predicate. Parallel to struct-continues.
+
+opaque log-returns :: Sign -> Sign -> Claim
+    -- log-returns(x, y): x has come back to bear on y.
+    -- The orbit predicate. Parallel to struct-orbits.
+
+
+-- =============================================================================
+-- SECTION III: AXIOMS
+-- Three about the operation, one about the irreducible itself.
+-- The same three-plus-one shape as hypermath Section III and hyperethics
+-- Section III. The shape is deliberate and is not evidence that the content is
+-- the same; see GC-2 and nd-shape-is-not-content.
+-- =============================================================================
+
+axiom ax-advance:
+    -- Turning moves a sign past where it was.
+    -- Without this: turn is the identity and the triangle has no interior.
+    for-all x :: Sign:
+        log-advances(turn(x), x)
+
+axiom ax-stay:
+    -- Turning stays inside what is derivable from the closure.
+    -- Without this: a turn could leave the field, and derivation would not be
+    -- closed under its own operation.
+    for-all x :: Sign:
+        log-derives(turn(x), closure)
+
+axiom ax-triangle:
+    -- Three turns are a circuit. Shape, matter and reading exhaust the registers
+    -- a sign can be read in, and the third reading is a shape again.
+    -- Without this: the registers form a line with an unreachable end rather
+    -- than a cycle, and nothing grounds itself.
+    -- THIS IS THE SELF-GROUNDING AXIOM OF THE LAYER. A cycle needs no exterior.
+    for-all x :: Sign:
+        log-returns(turn(turn(turn(x))), x)
+
+axiom ax-closure-self:
+    -- The closure already returns after one turn.
+    -- This is a MINIMAL axiom, and it closes one specific gap that the other
+    -- three leave open. ax-advance, ax-stay and ax-triangle are all universally
+    -- quantified over Sign and so say nothing that distinguishes the closure
+    -- from any other sign. Without this axiom the layer has an irreducible it
+    -- cannot tell apart from its own output.
+    -- It does NOT say the closure made itself, and nothing below reads it that way.
+    log-returns(turn(closure), closure)
+
+
+-- =============================================================================
+-- SECTION IV: DERIVES
+-- Each derive closes with the strongest honest status available at L0.
+-- =============================================================================
+
+derive d-turn-advances as FORM:
+    -- step 1: ax-advance at x := closure.
+    -- CONCLUSION: log-advances(turn(closure), closure).
+    -- The closure's own turn is not the closure.
+
+derive d-turn-stays as FORM:
+    -- step 1: ax-stay at x := closure.
+    -- CONCLUSION: log-derives(turn(closure), closure).
+    -- What the closure turns into is still derivable from it.
+
+derive d-triple-turn-returns as FORM:
+    -- step 1: ax-triangle at x := closure.
+    -- CONCLUSION: log-returns(turn(turn(turn(closure))), closure).
+    -- The full circuit of the closure comes back to the closure.
+
+derive d-two-signs as FORM:
+    -- PLURALITY, DERIVED RATHER THAN ASSUMED.
+    -- step 1: d-turn-advances: log-advances(turn(closure), closure).
+    -- step 2: log-advances(x, y) means not interderivable(x, y), by the Section
+    --         VI close. A sign is interderivable with itself.
+    -- step 3: so turn(closure) and closure are not the same sign.
+    -- CONCLUSION: the carrier has at least two members.
+    -- Section I posits one sign. This derives a second rather than declaring it,
+    -- and it is the direct analogue of hypermath's two-members-in-class and
+    -- hyperethics' d-two-bearers.
+    --
+    -- WHAT THIS DERIVE DEPENDS ON, STATED EXPLICITLY BECAUSE IT IS NOT THE
+    -- AXIOMS ALONE. Step 2 is the Section VI close, not an axiom of Section
+    -- III. Drop that close and the derive fails: the one-sign structure whose
+    -- single sign is its own turn, with all three opaque predicates read as the
+    -- single pair (closure, closure), satisfies ALL FOUR AXIOMS and has one
+    -- member. It is checkable as `collapsed_model` in
+    -- `src/hyperlogic/models.py`, and `nd-two-signs-from-axioms-alone` below
+    -- records the resulting non-derive.
+    --
+    -- This is the same dependency structure hypermath's two-members-in-class
+    -- has on `struct-distinct` closing to not-`==`, and it is recorded here
+    -- rather than left implicit because a reader who takes this derive as a
+    -- consequence of the four axioms would be wrong.
+
+derive d-return-exists as FORM:
+    -- step 1: d-triple-turn-returns gives a return for the closure.
+    -- step 2: ax-triangle gives one for every sign.
+    -- CONCLUSION: every sign has a return point, and the closure's is itself
+    --             by ax-closure-self.
+    -- Status: FORM. This is what makes the structure a cycle rather than a
+    -- sequence, and it owes nothing outside this file.
+
+
+-- =============================================================================
+-- SECTION V: RELATION DECLARATIONS
+-- Three relations, logic-native, in strictly increasing strength.
+-- Filtration between them is L1 content and does not appear here.
+--
+-- METHOD NOTE, RECORDED BECAUSE IT IS A KNOWN SOFT SPOT. Each relation is
+-- declared FROM an opaque predicate below, and Section VI then closes that
+-- opaque AS the relation. Read as a reduction this is circular. It is intended
+-- instead as a fixed point: the pair is stated together and neither half is
+-- prior. hypermath Sections V and VI do exactly the same thing, and whether
+-- that fixed point is well-founded is not settled there either. It is carried
+-- here as GC-5 rather than assumed away.
+-- =============================================================================
+
+relation shares-context :: Sign -> Sign -> Claim
+    -- x and y stand in some one derivation context.
+    -- The founding relation. Weakest, widest, most permissive.
+    -- Closed from: log-derives.
+    -- Properties: Symmetric. Reflexive on signs reachable from the closure.
+    --             Not transitive in general.
+
+relation same-conclusion :: Sign -> Sign -> Claim
+    -- x and y land on the same claim, by whatever route.
+    -- Stronger than shares-context. The route is discarded; only the landing
+    -- counts. This is the proof-theoretic reading of "same substance regardless
+    -- of path", and it is why two different proofs of one theorem are related
+    -- here and not merely context-sharing.
+    -- Closed from: log-derives with the derivation path discarded.
+    -- Properties: Symmetric. Implies shares-context. Does not imply interderivable.
+    -- The strictness is WITNESSED and not merely declared: `separating_model`
+    -- in `src/hyperlogic/models.py` satisfies all four axioms and holds
+    -- same-conclusion between two signs that are not interderivable. The
+    -- minimal circuit cannot witness it, because there the two relations
+    -- have the same extension.
+
+relation interderivable :: Sign -> Sign -> Claim
+    -- x derives y and y derives x.
+    -- Strongest, narrowest, hardest to earn. Earned by closure, never presupposed.
+    -- Closed from: full log-returns coincidence in both directions.
+    -- Properties: Symmetric. Implies same-conclusion.
+
+
+-- =============================================================================
+-- SECTION VI: CLOSING THE OPAQUE PREDICATES
+-- The semantics Section II deferred. These are not new axioms.
+-- After this section none of the three predicates is opaque.
+-- =============================================================================
+
+close log-derives as shares-context:
+    -- log-derives(x, closure) := shares-context(x, closure)
+    -- Reachability becomes: x stands in a derivation context with the closure.
+    -- This is the content ax-stay was asserting pre-relationally.
+    -- Formally: log-derives(x, closure) <=> shares-context(x, closure)
+
+close log-advances as not-interderivable:
+    -- log-advances(x, y) := not interderivable(x, y)
+    -- Moving past becomes: the two are not mutually derivable.
+    -- log-advances is grounded at the STRONGEST relation, not the weakest.
+    -- Two signs can share a context yet still advance past one another, which
+    -- is exactly the case for turn(closure) and closure:
+    --   turn(closure) shares-context closure       (ax-stay, and the close above)
+    --   turn(closure) not-interderivable closure   (ax-advance)
+    -- That gap is where every nontrivial derivation lives. A field in which the
+    -- two coincided would have derivations that never got anywhere.
+
+close log-returns as circuit-in-context:
+    -- log-returns(turn(turn(turn(x))), x) := shares-context(turn(turn(turn(x))), x)
+    -- Orbit closure becomes: the full circuit lands back in the same context.
+    -- ax-triangle is now expressible purely in relation language.
+
+
+-- =============================================================================
+-- SECTION VII: GRADUATION CRITERION -- L0 -> L1
+-- =============================================================================
+
+graduation L0 -> L1:
+    name: "self-closing-circuit"
+
+    -- GC-1: this layer closes its own three opaque predicates, in this file,
+    --       rather than deferring them.
+    --       DISCHARGED -- Section VI, three closes, all FORM.
+    --       This is the bar hypermath L0 meets at its Section VI and the bar
+    --       hyperethics L0 does not: hyperethics deferred its three to L1, and
+    --       L1_will.hm GC-3 records that L1 closed none of them and added a
+    --       fourth. GC-1 is stated first here because it is the criterion that
+    --       decides whether this is a foundation or a layer of something else.
+    --
+    -- GC-2: that Sign and Claim are independent of hypermath's Form and Prop,
+    --       and that closure is not ground under another name.
+    --       NOT DISCHARGED. THIS IS THE LOAD-BEARING OPEN PROBLEM OF THIS
+    --       PACKAGE. The three-plus-one axiom shape, the plurality derive, and
+    --       the opaque-then-close method are all shared with hypermath, and a
+    --       shared method is not evidence of independent content. If the
+    --       triangle turns out to need a Form-like carrier in order to be
+    --       stated at all, then hyperlogic is not a foundation, it is
+    --       hypermath Section VIII with new spelling, and this repository
+    --       should be archived with that result recorded rather than kept.
+    --       No argument that it is independent is offered anywhere in this file.
+    --
+    -- GC-3: that the triangle has three vertices rather than four or more.
+    --       NOT DISCHARGED. Declared in Section I and used by ax-triangle. No
+    --       argument is given that shape, matter and reading exhaust the
+    --       registers, and a fourth register would change ax-triangle's period
+    --       without disturbing anything else here, which is itself a sign that
+    --       the number is not doing derivational work yet.
+    --
+    -- GC-4: that these three relations suffice to close hypermath's seven
+    --       executive opaques -- syntax, substance, semantics, derives,
+    --       discharge, definition, form-closure.
+    --       NOT DISCHARGED, AND NOT ATTEMPTED. This is the eventual purpose of
+    --       the field and it is deliberately not claimed at L0. Until it is
+    --       done, hypermath Section VIII stays where it is and nothing is
+    --       removed from it. See nd-the-gate.
+    --
+    -- GC-5: that the declare-from / close-as pair of Sections V and VI is a
+    --       well-founded fixed point rather than a definitional circle.
+    --       NOT DISCHARGED. Inherited as a shared open problem with hypermath,
+    --       which uses the same construction. Recorded rather than resolved.
+    --
+    -- One of five discharged.
+    --
+    -- This layer does not graduate as a logic, and no claim of one is made
+    -- anywhere in this file. What it establishes is narrower and is worth
+    -- stating exactly: a cycle of three registers with a distinguished fixed
+    -- point, whose three structural predicates are closed where they are
+    -- declared.
+
+
+-- =============================================================================
+-- SECTION VIII: THE RELATION TO HYPERMATH, AND THE GATE
+-- =============================================================================
+
+non-derive nd-import-hypermath:
+    -- This package CANNOT be grounded in hypermath, and the reason is structural
+    -- rather than stylistic.
+    -- step 1: hypermath L0_ground.hm Sections I through VII are written in a
+    --         metalanguage -- derive, close, axiom, discharge, graduation.
+    -- step 2: hypermath's own Section VIII header states that those words
+    --         "appear constantly but were never defined as formal L0 objects",
+    --         and Section VIII exists to define them.
+    -- step 3: so the metalanguage is needed by hypermath in order to state
+    --         hypermath.
+    -- step 4: if this package imported hypermath, the dependency would run
+    --         hyperlogic -> hypermath -> hyperlogic.
+    -- CONCLUSION: a cycle. Under the acyclic dependency constraint the family
+    -- already follows -- foundations import nothing, grounded packages import
+    -- inward -- there is no grounded-hyperlogic. Either this is a foundation
+    -- with its own ground, or the material stays inside hypermath.
+    -- This file takes the first option. GC-2 is the bet that it works.
+
+open nd-the-gate:
+    -- NOTHING MOVES OUT OF HYPERMATH UNTIL GC-1 AND GC-4 ARE BOTH DISCHARGED.
+    -- GC-1 is discharged. GC-4 is not.
+    -- Until then hypermath Section VIII and L1_relations.hm Section IV stay
+    -- exactly where they are, unmodified, and this package is written beside
+    -- them rather than carved out of them. A foundation that removed another
+    -- foundation's metalanguage before it could supply a replacement would
+    -- break the base field of the family to make a point about layering.
+    -- The gate is stated as an open obligation, not as a comment, so that a
+    -- later reader can see it was a decision and not an oversight.
+
+non-derive nd-two-signs-from-axioms-alone:
+    -- That the carrier has at least two members. NOT a consequence of Sections
+    -- III alone, and the countermodel is explicit.
+    -- Witness: one sign, which is its own turn, with log-advances, log-derives
+    -- and log-returns all read as the single pair (closure, closure).
+    --   ax-advance       holds: (turn(closure), closure) = (closure, closure).
+    --   ax-stay          holds: same pair.
+    --   ax-triangle      holds: three turns of the only sign is that sign.
+    --   ax-closure-self  holds: one turn of the closure is the closure.
+    -- All four axioms hold and the carrier has one member. d-two-signs needs
+    -- the Section VI close of log-advances, which this structure violates
+    -- because it lets a sign advance past itself while being interderivable
+    -- with itself. Checkable as `collapsed_model`.
+    -- This is a genuine refutation, not a model-checking observation: one
+    -- countermodel settles a universal claim.
+
+non-derive nd-shape-is-not-content:
+    -- The three-plus-one axiom shape, the five derives, the plurality result
+    -- and the opaque-then-close method are shared with hypermath L0 and, in
+    -- part, with hyperethics L0.
+    -- That similarity is NOT evidence that this layer says something new, and
+    -- it is recorded here so that nobody later reads the resemblance as a
+    -- result. It is a method being reused. Whether the content is independent
+    -- is GC-2, and GC-2 is open.
