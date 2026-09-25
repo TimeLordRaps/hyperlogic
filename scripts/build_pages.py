@@ -103,7 +103,7 @@ def render_index(node: dict) -> str:
   <p class="lede">{html.escape(node['tagline'])}</p>
   <a class="cta" href="family/">Open the family explorer &rarr;</a>
   <p class="hint" style="margin-top:0">
-    The explorer centres this repository in the hyper-* interaction graph and carries the
+    The explorer centres this repository in the family interaction graph and carries the
     combined API reference for every package in the family, searchable in one place.
   </p>
   <section>
