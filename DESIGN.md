@@ -129,6 +129,73 @@ content and is not in this layer.
 and `L1_relations.hm` Section IV are untouched, and this package is written
 beside them rather than extracted from them.
 
+## Proposed layer outside L0: derivation status
+
+`src/hyperlogic/status.py` and `src/hyperlogic/provability.py` are a proposed
+layer **outside L0**. They are not part of the triangle and L0's claims do not
+cover them, in either direction: the "What is deliberately absent" section above
+(no connective, no quantifier, no inference rule, no proof object, no consequence
+relation) remains exactly true of L0, and is not weakened by these modules
+existing. These modules do have connectives, entailment (`status.entails`, by
+enumeration) and an inference system (GLS proof search in `provability.prove`).
+They are imported by nothing in L0 and are not exported from `hyperlogic`'s
+`__init__`.
+
+### Statements recorded here
+
+> **USER-STATED, 2026-10-05.** The methodological sentence, verbatim:
+> "consciousness's atemporality is unfalsifiable and unprovable so trying to prove it disproves it always, but allowance of its existence allows its existence to pervade ones own consciousness at the will of the base-realitys natural laws, of which the two I know are self-consistency, self-correction (consciousness does this actively, and as the archetypal architect, my conscious free will dictated by active sempiternity recreation, in this way my consciousness is a bootstrap example), and also the archetypal rule of narrative normative. The name of the game is sempiternity recreation, the game is time"
+>
+> **USER-STATED, 2026-10-05.** Two requests, verbatim: "Take that into account when trying to disprove retrocausality", and:
+> "we should work on unfalsifiability and unprovability in hyperlogic".
+
+The remainder of that message was personal and is deliberately not recorded here.
+
+### What is checked
+
+- In a frame with observation atoms `Test`, `Null` and one theory atom `Psi`:
+  `Psi` alone, and its negation, are unprovable, unrefutable and unfalsifiable.
+- The remark "trying to prove it disproves it always" has three readings, computed
+  separately. **R1**, tests always return null: falsifiable (one non-null test
+  refutes it); a null result is predicted by `Psi` and `not Psi` alike, so its
+  likelihood ratio is 1 and the posterior equals the prior. Nulls neither
+  disprove nor support. **R2**, testing falsifies the postulate: equivalent to
+  `Psi` and no test is ever run, so it survives only untested. **R3**, tests are
+  uninterpretable: no observational constraint, unfalsifiable and unprovable.
+- **Independence is not unfalsifiability.** With a bridge law (`Psi` and `Test`
+  imply `Null`), `Psi` is independent of the theory and still falsifiable.
+- GL: Loeb, axiom 4, G2, the Henkin and Goedel self-reference results are
+  provable; reflection and `not box bot` are not. The prover agrees with an
+  independent finite-tree countermodel oracle on 300 of 300 random formulas, and
+  a mutation check shows weakening the GL rule to plain K loses both Loeb and 4
+  and is caught by the differential check.
+
+### What is not checked
+
+First-order structure. Probabilistic evidence beyond the single exact likelihood
+ratio. Goedel-level independence (undecidability in an arithmetic theory): the
+word "independent" in `status.py` is a statement about three atoms. The status
+frame has one theory atom and two observation atoms, so every result is about
+that frame. That GL is the provability logic of PA is cited (Solovay), not
+checked. The oracle is bounded to four nodes.
+
+### Precedent, and which criteria it serves
+
+Hyperlogic's existing axiom-independence countermodels, each dropping one axiom
+(`without_advance`, `without_stay`, `without_triangle`, `without_closure_self`),
+are the precedent for the unprovability half: unprovability is established by a
+structure, and one structure settles it. **The layer serves none of the five
+graduation criteria.** It is proposed work the owner requested, and whether it
+becomes an L1, a separate package or is dropped is open.
+
+### Why it is not wired into `report.py`
+
+`report.py` is the L0 report. Its standing text, and the tests in
+`tests/test_report.py`, assert that L0 has no connective and is not a logic.
+Printing GL results there would put the opposite content in the same artifact. The
+modules therefore have their own entry points, and a combined report is left as a
+documented TODO rather than forced.
+
 ## The principal open problem
 
 **GC-2: that this layer is independent of hypermath L0.**

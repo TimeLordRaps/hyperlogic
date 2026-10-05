@@ -127,3 +127,27 @@ The checks were run on Windows with the repository-local `.venv`, which is
 excluded from version control by `.gitignore`. A reader reproducing this receipt
 should create a fresh environment from the `dev` extra rather than expect the
 one used here to be present.
+
+## Addendum 2026-10-05: proposed layer outside L0
+
+Nothing above is changed or re-validated by this addendum. The receipt above is
+about the L0 triangle and its bytes, and it remains as written: its 64-test
+count, its manifest digest and its claims are about the L0 files only.
+
+Two modules were added beside L0 and are **not covered by that receipt or by
+`validation/source-manifest.json`**, which was deliberately not regenerated:
+`src/hyperlogic/status.py` and `src/hyperlogic/provability.py`, with
+`tests/test_status.py` and `tests/test_provability.py`. They have connectives
+and inference and are described, with their limits, in `README.md` and
+`DESIGN.md`. They serve none of the five graduation criteria.
+
+Observed on the branch `claude/derivation-status-layer`, Python 3.11.15, pytest
+9.1.1, ruff 0.16.10, Linux (not the Windows environment of the receipt above):
+`python -m pytest tests` gives 86 passed (the 64 L0 tests plus 22 new),
+`python -m ruff check src tests` passes, `python -m hyperlogic` is unchanged and
+exits zero. The new checks are exhaustive enumeration over eight assignments, a
+differential test of the GL prover against a bounded finite-tree oracle (300 of
+300 on a seeded sample), and two mutation checks (a dropped null prediction, a
+wrong likelihood ratio; the GL rule weakened to K). They do not establish
+first-order, probabilistic or Goedel-level results. A source manifest for the
+new files is not written; that is an open TODO.

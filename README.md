@@ -180,6 +180,48 @@ the opaque-then-close method are all shared with hypermath L0. That resemblance
 is a **method being reused** and is not evidence that this layer says anything
 new. Whether the content is independent is GC-2, and GC-2 is open.
 
+## Proposed, outside L0: a derivation-status layer
+
+**This section is about two modules that are not L0, and nothing above this
+heading is changed by them.** Every L0 claim in this README stays exactly true of
+L0: `triangle.py`, `models.py`, `relations.py`, `report.py` and
+[`L0_triangle.hm`](L0_triangle.hm) still contain no connective, no quantifier, no
+inference rule and no proof object, and `python -m hyperlogic` still reports one
+of five graduation criteria discharged. L0 imports neither module.
+
+The two modules below DO have connectives and an entailment or inference
+relation. They are a **separately proposed layer**, written beside L0, and the
+claim "this is not a logic" is a claim about L0 only.
+
+| Module | What it computes | Run |
+|---|---|---|
+| `src/hyperlogic/status.py` | In a finite propositional frame, whether a postulate is provable, refutable or independent of a theory, and whether it is falsifiable or unfalsifiable, by enumeration. Evaluates three readings of the owner's remark below. | `python -m hyperlogic.status` |
+| `src/hyperlogic/provability.py` | A decision procedure for the provability logic GL (sequent calculus GLS) with an independent finite-tree countermodel oracle; Loeb, G2, Henkin and Goedel self-denial checks; letterless arithmetic truth; modal agents. | `python -m hyperlogic.provability` |
+
+The owner's statements that motivate it are recorded verbatim, with their
+`USER-STATED` marking, in [DESIGN.md](DESIGN.md#proposed-layer-outside-l0-derivation-status).
+Hyperlogic's existing independence countermodels, each satisfying three axioms
+and dropping one, are the precedent for the unprovability half: unprovability is
+shown by a countermodel, and `provability.py` keeps that method (`countermodel`
+is the oracle that `prove` is checked against).
+
+**Which graduation criteria this serves: none.** It discharges none of GC-1 to
+GC-5 and does not change the count of one of five. It does not close any of
+hypermath's seven executive opaques (GC-4), and it says nothing about GC-2.
+
+**Its own limits.** Propositional only; no first-order structure. The status
+frame has one theory atom and two observation atoms, and "independent" there
+means only that a postulate and its negation both have models of the theory, not
+Goedel-level independence from an arithmetic theory. No probabilistic evidence is
+modelled beyond one exact likelihood ratio for a null result. GL is a decidable
+modal logic; that it is the provability logic of arithmetic is Solovay's theorem,
+cited and not reproved here. The countermodel oracle is bounded to small trees.
+The checks are `HOLDS_IN_MODEL`-style evidence and not a proof-assistant
+theorem. `report.py` and `python -m hyperlogic` do **not** include these modules:
+adding them would put connectives into the L0 report, whose standing text and
+tests say otherwise. TODO: decide whether a separate `python -m hyperlogic.status`
+receipt belongs in `VALIDATION.md`'s regime or a second report entry point.
+
 ## Preprint
 
 There is none, and none is drafted. This is recorded rather than left to
