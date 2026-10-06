@@ -196,6 +196,25 @@ Printing GL results there would put the opposite content in the same artifact. T
 modules therefore have their own entry points, and a combined report is left as a
 documented TODO rather than forced.
 
+## Proposed physical reading: positions of a closed clock (outside L0)
+
+**Status: PROPOSED, OUTSIDE L0. No L0 claim changes, and L0 stays "not a logic".** On 2026-10-06 the
+owner stated that shape, matter and reading exist on forms in sempiternity, with abstractions accessible
+through areality simulation (recorded in hyperreality `PROVENANCE.md`). `tests/test_closed_clock_reading.py`
+gives that placement an executable form without touching the triangle: read the three registers as the three
+positions of a closed three-step clock whose steps are derivation steps. In hyperphysics
+(`docs/research/TIME_BUBBLE_SHEET.md`) the energy of such a clock-system state is the total squared violation of
+its steps, so a chain is valid exactly when every step is. Interpreting `turns` as the successor, `advances`
+as the valid steps, `derives` as reachability from the closure and `returns` as reachability by one or more
+steps, the four axioms hold **if and only if** all three steps are valid, that is, if and only if the circuit
+closes with zero violation. On 200 random cycles, half with one state corrupted, `is_model` agreed with
+"zero violation" every time; an open circuit and a corrupted state fail by name.
+
+What this gives: `ax-triangle` has an exact reading as *circuit closure* in a system with a well-defined
+notion of a broken step. What it does not give: that L0 is this physical structure, that three is the right
+period (GC-3 stays open), or any connective, quantifier, rule or proof object. The reading is one more finite
+structure that satisfies the axioms, alongside the canonical ones in `models.py`.
+
 ## The principal open problem
 
 **GC-2: that this layer is independent of hypermath L0.**
