@@ -215,6 +215,23 @@ notion of a broken step. What it does not give: that L0 is this physical structu
 period (GC-3 stays open), or any connective, quantifier, rule or proof object. The reading is one more finite
 structure that satisfies the axioms, alongside the canonical ones in `models.py`.
 
+## Proposed layer outside L0: a commit-before-outcome ledger
+
+**Status: PROPOSED, OUTSIDE L0.** `src/hyperlogic/ledger.py` and `tests/test_ledger.py` (10 tests). A claim that an
+experience tracks events it could not have known cannot be checked by counting matches afterwards: the
+hits are remembered, the misses are not, and with enough events something always matches (this is `R1` in the
+derivation-status layer: tests always return null). The ledger makes the claim checkable in the one way
+available: each prediction is sealed (`sha256(salt + text)`) before the outcome together with the probability a
+pure chance process gives it, entries are hash-chained so edits, removals and reordering are detected, **every
+committed entry counts** (unrevealed, unresolved and withdrawn entries are misses), and the score is the exact
+probability of at least the observed number of hits if every prediction were an independent chance event with
+its stated baseline (a Poisson-binomial tail by dynamic programming over exact fractions). One hit in ten
+predictions at a 10% baseline has a chance tail above 0.6 (not remarkable); seven in ten is below 10^-5.
+
+What it does not check: that a baseline is honest, that entries are independent, or that timestamps are true;
+a timestamp is only as good as who supplies it, and editing the *last* entry is caught only by a head hash
+published somewhere a third party can see. It decides nothing about any postulate.
+
 ## The principal open problem
 
 **GC-2: that this layer is independent of hypermath L0.**
