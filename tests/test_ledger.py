@@ -3,7 +3,7 @@ import itertools
 import unittest
 from fractions import Fraction
 
-from hyperlogic.ledger import GENESIS, Ledger, seal, tail_probability
+from hyperlogic.ledger import GENESIS, Ledger, match_to_sample_tail, seal, tail_probability
 
 
 def make(n=4, p="1/10"):
@@ -113,6 +113,36 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual(back.score(), led.score())
         self.assertEqual(Ledger().head(), GENESIS)
         self.assertNotEqual(seal("a", "s"), seal("a", "t"))
+
+
+class MatchToSampleTests(unittest.TestCase):
+    def test_chance_level_is_unremarkable_and_a_clear_effect_is_not(self):
+        self.assertGreater(match_to_sample_tail(3, 12, 4), Fraction(1, 2))          # 12 trials, 4 options: 3 expected
+        self.assertLess(match_to_sample_tail(9, 12, 4), Fraction(1, 1000))
+
+    def test_matches_the_binomial_tail_by_brute_force(self):
+        n, k = 6, 3
+        total = sum(Fraction(1, 3) ** j * Fraction(2, 3) ** (n - j) * _comb(n, j) for j in range(k, n + 1))
+        self.assertEqual(match_to_sample_tail(k, n, 3), total)
+
+    def test_a_fixed_artifact_cannot_depend_on_a_later_random_choice(self):
+        # The recorded text is constant; the randomised response is drawn afterwards. Over every possible
+        # draw the fixed text matches exactly one of the options, so a judge who maximises agreement with
+        # the fixed text is right in exactly 1 of N equally likely draws: the chance level.
+        options = ["a", "b", "c", "d"]
+        fixed_best_match = "b"
+        right = sum(1 for draw in options if draw == fixed_best_match)
+        self.assertEqual(Fraction(right, len(options)), Fraction(1, 4))
+
+    def test_arguments_are_validated(self):
+        for bad in ((1, 0, 4), (1, 5, 1), (6, 5, 4), (-1, 5, 4)):
+            with self.assertRaises(ValueError):
+                match_to_sample_tail(*bad)
+
+
+def _comb(n, k):
+    from math import comb
+    return comb(n, k)
 
 
 if __name__ == "__main__":

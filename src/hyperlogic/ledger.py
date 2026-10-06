@@ -148,3 +148,11 @@ def tail_probability(baselines, hits: int) -> Fraction:
             nxt[k + 1] += mass * p
         dist = nxt
     return sum(dist[hits:], Fraction(0))
+
+
+def match_to_sample_tail(hits: int, trials: int, options: int) -> Fraction:
+    """Exact chance tail for a blind match-to-sample test: in each of `trials` trials a judge who
+    does not know the true item picks one of `options` candidates; chance is 1/options per trial."""
+    if trials < 1 or options < 2 or not 0 <= hits <= trials:
+        raise ValueError("need trials >= 1, options >= 2 and 0 <= hits <= trials")
+    return tail_probability([Fraction(1, options)] * trials, hits)
